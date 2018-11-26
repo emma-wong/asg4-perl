@@ -69,9 +69,29 @@ my %strsignal = (
 open my $file, $makefile or die "$0: $makefile: $!";
 
 while (defined(my $line = <$file>)) {
-  
-}
+  chomp($line);
 
+  # check line for a macro, target, or command
+  if ($line !~ /^#.+/) {
+
+    # if macro
+    if ($line =~ /\s*(\S+)\s*=\s+(.+)/) {
+      my @array_of_values = ();
+      @array_of_values = split(" ", $2);
+      $macros->{$1} = [@array_of_values];
+    }
+
+    # else if target
+    else if ($line =~ /\s*(\S+)\s*:.*/ and $line !~ /\t\s*.+/) {
+      if ($mytarget eq "") {$mytarget = $1;}
+      previous = $1;
+      
+    }
+
+    # else if command
+  }
+}
+close $file;
 
 # sub execute_targetcommands {
 #    my $exit_ignore = 0;
