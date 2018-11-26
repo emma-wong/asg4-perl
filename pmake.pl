@@ -83,9 +83,14 @@ while (defined(my $line = <$file>)) {
 
     # else if target
     else if ($line =~ /\s*(\S+)\s*:.*/ and $line !~ /\t\s*.+/) {
+      my $target = $1;
       if ($mytarget eq "") {$mytarget = $1;}
       previous = $1;
-      
+      if ($line =~ /.+:\s+(.+)/) {
+        my @array_of_values = ();
+        @array_of_values = split(" ", $1);
+        $targets->{$target} = [@array_of_value]
+      }
     }
 
     # else if command
