@@ -72,7 +72,7 @@ while (defined(my $line = <$file>)) {
   chomp($line);
 
   # check line for a macro, target, or command
-  if ($line !~ /^#.+/) {
+  next if ($line =~ /^#.+/);
 
     # if macro
     if ($line =~ /\s*(\S+)\s*=\s+(.+)/) {
@@ -94,7 +94,17 @@ while (defined(my $line = <$file>)) {
     }
 
     # else if command
-  }
+    else if ($line =~ /\t\s*(.+)/ ) {
+      my $cmd = $1
+      if(! exists $commands->{$previous} ){
+        $commands->{$previous} = ();
+      }
+      my $cmd_s = split(" ", $cmd);
+      push(@{$commands->{$previous}}, $cmd_s);
+      push(@{$commands->{$previous}}, "\n");
+    }
+
+
 }
 close $file;
 
