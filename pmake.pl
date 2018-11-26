@@ -1,5 +1,8 @@
-# This program was completed using pair programming
-# 
+#!/usr/bin/perl
+
+# This program was completed using pair programming.
+#
+# Partners:
 # Emma Wong (emgwong)
 # Ryan Watkins (rdwatkin)
 
@@ -7,6 +10,30 @@
 use strict;
 use warnings;
 use Getopt::Std;
+
+# program name
+$0 =~ s|^(.*/)?([^/]+)/*$|$2|;
+
+# declare hashtables and relevant indices
+my %macros;
+my %targets;
+my %commands;
+my @prev;
+my $previous = "";
+
+# exit signal
+my $myexit = 0;
+END {exit $myexit;}
+
+# checks for -d
+my %options;
+getopts('d', \%options);
+
+my $makefile = './Makefile';
+
+# get target
+my $mytarget = "";
+$mytarget = $ARGV[0] if $ARGV[0];
 
 my %strsignal = (
     1 => "Hangup",
@@ -39,3 +66,39 @@ my %strsignal = (
    31 => "Bad system call",
 );
 
+open my $file, $makefile or die "$0: $makefile: $!";
+
+while (defined(my $line = <$file>)) {
+  
+}
+
+
+# sub execute_targetcommands {
+#    my $exit_ignore = 0;
+#    my $term_signal = $? & 0x7F;
+#    my $core_dumped = $? & 0x80;
+#    my $exit_status = ($? >> 8) & 0xFF;
+#    if ($exit_status != 0) {
+#       printf "%s: %s[%s] Error %d%s\n", $0, 
+#       $exit_ignore ? '' : '*** ', $trgt, 
+#       $exit_status, $exit_ignore ? ' (ignored)' : '';
+#       if (!$exit_ignore) {
+#          exit 2;
+#       }
+#       else {
+#          $myexit_status = $exit_stat;
+#       }
+#    }
+# }
+
+# method for runtime
+sub mtime ($) {
+  my ($filename) = @_;
+  my @stat = stat $filename;
+  return @stat ? $stat[9] : undef;
+}
+
+sub debug {
+
+}
+debug_print() if defined $options{'d'};
